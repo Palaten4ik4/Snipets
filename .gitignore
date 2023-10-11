@@ -1,1 +1,7 @@
-"node_modules/" 
+# Node dependencies
+node_modules/
+
+# Git LFS tracked files (если у вас есть какие-либо конкретные файлы для отслеживания в LFS)
+*.mp4
+
+# Others (добавьте другие файлы или папки, которые вы хотите исключить из репозитория)
