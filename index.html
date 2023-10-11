@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnippetSaver</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+</head>
+<body>
+
+<h1>SnippetSaver</h1>
+
+<form id="snippetForm">
+    <label for="language">Язык программирования:</label>
+    <select id="language">
+        <option value="JavaScript">JavaScript</option>
+        <option value="Python">Python</option>
+        <option value="Java">Java</option>
+        <option value="C++">C++</option>
+        <option value="Go">Go</option>
+        <option value="Rust">Rust</option>
+        <!--  другие языки  -->
+    </select>
+
+    <label for="description">Описание:</label>
+    <input type="text" id="description" placeholder="Введите краткое описание фрагмента">
+
+    <label for="snippet">Фрагмент кода:</label>
+    <textarea id="snippet" rows="10" placeholder="Вставьте ваш фрагмент кода здесь"></textarea>
+
+    <button hx-post="http://localhost:3000/saveSnippet" hx-trigger="click" hx-swap-oob="true" hx-vals="{language: language.value, description: description.value, snippet: snippet.value}" hx-target="#message">Сохранить</button>
+</form>
+
+<div id="message"></div>
+
+<script>
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+        let response = JSON.parse(event.detail.xhr.responseText);
+        let messageDiv = document.getElementById("message");
+        if (response.status === "success") {
+            messageDiv.className = "success";
+        } else {
+            messageDiv.className = "error";
+        }
+        messageDiv.innerText = response.message;
+
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000); // Сообщение исчезает через 3 секунды
+    });
+</script>
+
+</body>
+</html>
